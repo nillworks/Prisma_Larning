@@ -12,27 +12,84 @@ datasource db {
   provider = "postgresql"
 }
 
+// model User {
+//   id        String     @id @default(uuid())
+//   name      String
+//   email     String     @unique
+//   password  String
+//   phone     String?
+//   address   String?
+//   image     String?
+//   createAt  DateTime   @default(now())
+//   updatedAt DateTime   @updatedAt
+//   jobs      JobsPost[]
+
+//   @@map("users")
+// }
+
+// model JobsPost {
+//   id              String @id @default(uuid())
+//   title           String
+//   description     String
+//   maxSalary       Int
+//   location        String
+//   jobRequirements String
+
+//   createAt  DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   // Relation for users
+//   users  User   @relation(fields: [userId], references: [id])
+//   userId String
+// }
+
 model User {
-  id      String     @id @default(uuid())
-  name    String
-  email   String     @unique
-  phone   String?
-  address String?
-  image   String?
-  jobs    JobsPost[]
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  address   String?
+  image     String?
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relation for Movie and review
+  movieList Movie[]  @relation("UserWatchList")
+  review    Review[]
 
   @@map("users")
 }
 
-model JobsPost {
-  id              String @id @default(uuid())
-  title           String
-  description     String
-  maxSalary       Int
-  location        String
-  jobRequirements String
+model Movie {
+  id          String   @id @default(uuid())
+  name        String
+  releaseDate DateTime
+  director    String
+  genre       String
 
-  // Relation for users
-  author User   @relation(fields: [userId], references: [id])
-  userId String
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relation for users
+  movieWatchUser User[]   @relation("UserWatchList")
+  review         Review[]
+
+  @@map("moves")
+}
+
+model Review {
+  id      String @id @default(ulid())
+  movieId String
+  userId  String
+
+  reviewDescription String
+  createAt          DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relation uses and movie
+  movie Movie @relation(fields: [movieId], references: [id])
+  users User  @relation(fields: [userId], references: [id])
+
+  @@map("reviews")
 }
