@@ -1,0 +1,13 @@
+allowBuilds:
+  '@prisma/engines': set this to true or false
+  esbuild: set this to true or false
+  prisma: set this to true or false
+minimumReleaseAgeExclude:
+  - '@prisma/config@7.10.0'
+  - '@prisma/debug@7.10.0'
+  - '@prisma/engines@7.10.0'
+  - '@prisma/fetch-engine@7.10.0'
+  - '@prisma/get-platform@7.10.0'
+  - prisma@7.10.0
+  - '@prisma/client-runtime-utils@7.10.0'
+  - '@prisma/client@7.10.0'
