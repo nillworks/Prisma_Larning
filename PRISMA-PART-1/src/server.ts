@@ -1,12 +1,22 @@
-import express, { type Request, type Response } from 'express';
+// import express, { type Request, type Response } from 'express';
 
-const app = express();
-const port = 3000;
+import 'dotenv/config';
+import { PrismaClient } from '../generated/prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+async function main() {
+  const createUser = await prisma.user.create({
+    data: {
+      name: 'rahim',
+      email: 'rahim@example.com',
+      password: '1234567',
+    },
+  });
+
+  console.log(createUser, 'Create user response');
+}
+
+main();
